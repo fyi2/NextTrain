@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    tools:context="org.sherman.tony.nexttrain.activities.MainActivity">
+
+
+
+    <Button
+        android:id="@+id/favoriteBtn"
+        android:layout_width="196dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="140dp"
+        android:background="#4fa881"
+        android:padding="10dp"
+        android:textColor="#212121"
+        android:text="Recent Stations"
+        android:textSize="18sp"
+        android:onClick="loadStations"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/listBtn"
+        android:layout_width="196dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="#4fa881"
+        android:padding="10dp"
+        android:textColor="#212121"
+        android:textSize="18sp"
+        android:text="All Stations"
+        android:onClick="loadStations"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/favoriteBtn" />
+
+    <Button
+        android:id="@+id/testBtn"
+        android:layout_width="196dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="#4fa881"
+        android:padding="10dp"
+        android:textColor="#212121"
+        android:textSize="18sp"
+        android:text="Test"
+        android:onClick="loadTestPage"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listBtn" />
+
+
+</android.support.constraint.ConstraintLayout>
