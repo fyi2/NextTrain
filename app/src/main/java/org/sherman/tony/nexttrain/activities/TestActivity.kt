@@ -8,6 +8,8 @@ import android.view.View
 import android.widget.Toast
 import org.sherman.tony.nexttrain.R
 import org.sherman.tony.nexttrain.adapters.dBHandler
+import org.sherman.tony.nexttrain.data.CODE_STATION
+import org.sherman.tony.nexttrain.data.CODE_TABBED
 
 class TestActivity : AppCompatActivity() {
 
@@ -50,5 +52,11 @@ class TestActivity : AppCompatActivity() {
             println("TOUCHED STATION + ${s.station}")
         }
 
+    }
+    fun gotoTabbed(view: View){
+        val intent = Intent(applicationContext,NextTrainActivity::class.java)
+        intent.putExtra("page","tabbed")
+        startActivity(intent)
+        //startActivityForResult(intent, CODE_TABBED)
     }
 }

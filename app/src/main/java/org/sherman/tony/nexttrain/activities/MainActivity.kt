@@ -10,6 +10,8 @@ import android.widget.Button
 import android.widget.Toast
 import org.sherman.tony.nexttrain.R
 import org.sherman.tony.nexttrain.data.CODE_STATION
+import org.sherman.tony.nexttrain.data.CODE_TABBED
+import org.sherman.tony.nexttrain.data.CODE_TEST
 import org.sherman.tony.nexttrain.data.Globals
 
 class MainActivity : AppCompatActivity() {
@@ -36,6 +38,12 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, result, Toast.LENGTH_LONG).show()
             }
         }
+        if (requestCode == CODE_TABBED) {
+            if (resultCode == Activity.RESULT_OK) {
+                var result = data!!.extras.get("return").toString()
+                Toast.makeText(this, result, Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     fun loadStations(view: View) {
@@ -55,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(applicationContext,TestActivity::class.java)
         intent.putExtra("stations","all")
 
-        startActivityForResult(intent, CODE_STATION)
+        startActivityForResult(intent, CODE_TEST)
 
     }
 

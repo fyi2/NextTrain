@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
 import android.os.Bundle
 import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
@@ -44,8 +45,6 @@ class ListRecyclerAdapter(context: Context, stations:ArrayList<StationList>): Re
         var mList = list
         var stationName: TextView = itemView.findViewById(R.id.stationListTextViewID)
 
-
-
         fun bindViews(stationList: StationList) {
 
 
@@ -60,6 +59,7 @@ class ListRecyclerAdapter(context: Context, stations:ArrayList<StationList>): Re
             when(view!!.id){
                 stationName.id -> {
                     var db = dBHandler(mContext)
+                    db.touchRecord(stationName.text.toString())
                     var returnCode = db.touchRecord(stationName.text.toString())
                     Toast.makeText(mContext, "Clicked Station ${stationName.text}", Toast.LENGTH_LONG).show()
                 }

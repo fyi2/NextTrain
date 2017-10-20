@@ -45,3 +45,5 @@ val STATION_LIST: List<String>  = listOf("Abington","Anderson Woburn","Andover",
 
 // Intent Codes
 val CODE_STATION = 1
+val CODE_TABBED = 2
+val CODE_TEST = 3
