@@ -47,3 +47,9 @@ val STATION_LIST: List<String>  = listOf("Abington","Anderson Woburn","Andover",
 val CODE_STATION = 1
 val CODE_TABBED = 2
 val CODE_TEST = 3
+
+
+// MBTA
+val MBTA_KEY = "?api_key=wX9NwuHnZU2ToO7GmGR9uw"
+val MBTA_ROOT = "https://realtime.mbta.com/developer/api/v2/schedulebystop"
+val MBTA_FORMAT = "&max_time=240&format=json"

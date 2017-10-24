@@ -8,7 +8,7 @@
     tools:context="org.sherman.tony.nexttrain.activities.LoadStationsActivity">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerViewID"
+        android:id="@+id/recyclerViewID2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

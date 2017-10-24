@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.android.volley.RequestQueue
+import com.android.volley.toolbox.Volley
 import kotlinx.android.synthetic.main.activity_load_stations.*
 import org.sherman.tony.nexttrain.R
 import org.sherman.tony.nexttrain.adapters.ListRecyclerAdapter
@@ -21,6 +23,7 @@ class LoadStationsActivity : AppCompatActivity() {
     var stationList: ArrayList<StationList>? = null
     var stationListItems: ArrayList<StationList>? = null
     var layoutManager: RecyclerView.LayoutManager? = null
+    var requestQueue: RequestQueue? = null // Set up a Volley Request Queue
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,10 +35,11 @@ class LoadStationsActivity : AppCompatActivity() {
         stationListItems = ArrayList()
         layoutManager = LinearLayoutManager(this)
         recyclerAdapter = ListRecyclerAdapter(this, stationListItems!!)
+        requestQueue = Volley.newRequestQueue(this) // Instantiate the Volley Queue
 
         // Set up the Recycler View
-        recyclerViewID.layoutManager = layoutManager
-        recyclerViewID.adapter = recyclerAdapter
+        recyclerViewID2.layoutManager = layoutManager
+        recyclerViewID2.adapter = recyclerAdapter
 
         // Load the data depending on what the intent value stations was set to
 
