@@ -19,7 +19,7 @@
 
             <TextView
                 android:id="@+id/stationListTextViewID"
-                android:layout_width="260dp"
+                android:layout_width="340dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
@@ -30,7 +30,7 @@
 
             <TextView
                 android:id="@+id/timeScheduleID"
-                android:layout_width="160dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
 

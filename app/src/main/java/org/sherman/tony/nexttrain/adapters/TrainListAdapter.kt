@@ -38,16 +38,19 @@ class TrainListAdapter(var listOfTrains: ArrayList<TrainStatus>,
 
         fun bindView(train: TrainStatus){
             var humanTime = readableTime(train.sch_arr_time!!)
-            //println("ARRIVAL TIME ===> ${train.sch_arr_time}")
             station.text = train.route.toString()
-            //arrivalTime.text = humanTime
-            arrivalTime.text = train.sch_arr_time.toString()
-        }
-        fun readableTime(milliSeconds: Long): String {
-            var date = Date(milliSeconds)
-            val dateFormat: DateFormat = SimpleDateFormat("H:mm")
-            return dateFormat.format(date)
+            arrivalTime.text = humanTime
+            //arrivalTime.text = train.sch_arr_time.toString()
         }
 
+        fun readableTime(seconds: Long):String {
+            val milliSeconds = seconds*1000
+            var date = Date()
+            date.setTime(milliSeconds)
+            val dateFormat = SimpleDateFormat("hh:mm")
+            return dateFormat.format(date)
+
+            return ""
+        }
     }
 }

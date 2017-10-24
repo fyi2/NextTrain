@@ -23,6 +23,8 @@ import org.sherman.tony.nexttrain.data.MBTA_FORMAT
 import org.sherman.tony.nexttrain.data.MBTA_KEY
 import org.sherman.tony.nexttrain.data.MBTA_ROOT
 import org.sherman.tony.nexttrain.models.TrainStatus
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 
 class NextTrainActivity : AppCompatActivity() {
 
@@ -66,38 +68,45 @@ class NextTrainActivity : AppCompatActivity() {
     fun readTrains(url:String, station: String) {
 
         var trainStatus = TrainStatus()
+        val routeDefault = "MBTA Error"
+        val defaultTime: Long = System.currentTimeMillis()
 
-
-        println("URL ===> $url")
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET,url,
                 Response.Listener {
                     response: JSONObject ->
                     try {
                         val responseMode = response.getJSONArray("mode")
-                        val responseModeRouteObj = responseMode.getJSONObject(0)
-                        val responseModeRouteObjRoute = responseModeRouteObj.getJSONArray("route")
-                        for (i in 0..responseModeRouteObjRoute.length() - 1){
-                            val responseModeRouteObjRouteRouteObj = responseModeRouteObjRoute.getJSONObject(i)
-                            val responseModeRouteObjRouteRouteObjDirection = responseModeRouteObjRouteRouteObj.getJSONArray("direction")
-                            for (j in 0.. responseModeRouteObjRouteRouteObjDirection.length() - 1){
-                                val responseModeRouteObjRouteRouteObjDirectionDirectionObj = responseModeRouteObjRouteRouteObjDirection.getJSONObject(j)
-                                val direction = responseModeRouteObjRouteRouteObjDirectionDirectionObj.getString("direction_id")
-                                val directionValue = direction.toInt()
-                                val tripArray = responseModeRouteObjRouteRouteObjDirectionDirectionObj.getJSONArray("trip")
-                                for (k in 0..tripArray.length() - 1){
-                                    trainStatus = TrainStatus()
-                                    trainStatus.direction_id = directionValue
-                                    var tripArrayObj = tripArray.getJSONObject(k)
-                                    var schArrival = tripArrayObj.getString("sch_arr_dt")
-                                    trainStatus.sch_arr_time = schArrival.toLong()
-                                    trainStatus.route = tripArrayObj.getString("trip_name")
+                        if (responseMode.length() == 0){ // Catch an empty Response
+                            listOfTrains = setErrorList(routeDefault, defaultTime)
+                        }
+                        else {
+                            val responseModeRouteObj = responseMode.getJSONObject(0)
+                            val responseModeRouteObjRoute = responseModeRouteObj.getJSONArray("route")
+                            if (responseModeRouteObjRoute.length() == 0){ // catch empty Routes
+                                listOfTrains = setErrorList(routeDefault, defaultTime)
+                            }
+                            else {
+                                for (i in 0..responseModeRouteObjRoute.length() - 1) {
+                                    val responseModeRouteObjRouteRouteObj = responseModeRouteObjRoute.getJSONObject(i)
+                                    val responseModeRouteObjRouteRouteObjDirection = responseModeRouteObjRouteRouteObj.getJSONArray("direction")
+                                    for (j in 0..responseModeRouteObjRouteRouteObjDirection.length() - 1) {
+                                        val responseModeRouteObjRouteRouteObjDirectionDirectionObj = responseModeRouteObjRouteRouteObjDirection.getJSONObject(j)
+                                        val direction = responseModeRouteObjRouteRouteObjDirectionDirectionObj.getString("direction_id")
+                                        val directionValue = direction.toInt()
+                                        val tripArray = responseModeRouteObjRouteRouteObjDirectionDirectionObj.getJSONArray("trip")
+                                        for (k in 0..tripArray.length() - 1) {
+                                            trainStatus = TrainStatus()
+                                            trainStatus.direction_id = directionValue
+                                            var tripArrayObj = tripArray.getJSONObject(k)
+                                            var schArrival = tripArrayObj.getString("sch_arr_dt")
+                                            trainStatus.sch_arr_time = schArrival.toLong()
+                                            trainStatus.route = tripArrayObj.getString("trip_name")
 
-                                    println("ARRIVAL TIME = ${trainStatus.sch_arr_time}") // DEBUGGING print statement
+                                            println("ARRIVAL TIME = ${trainStatus.sch_arr_time}") // DEBUGGING print statement
 
-                                    listOfTrains!!.add(0, trainStatus)
-                                    //println("ADDITION RESPONSE WAS $addResponse")
-                                    for (i in 0..listOfTrains!!.size - 1) {
-                                        println("FINAL LIST ELEMENT ===> ${listOfTrains!![i].sch_arr_time}")
+                                            listOfTrains!!.add(0, trainStatus)
+
+                                        }
                                     }
                                 }
                             }
@@ -129,6 +138,15 @@ class NextTrainActivity : AppCompatActivity() {
         //return list
     }
 
+    fun setErrorList(route: String, now: Long):ArrayList<TrainStatus>{
+        val trainStatus = TrainStatus()
+        trainStatus.route = route
+        trainStatus.direction_id = 1
+        trainStatus.sch_arr_time = now
+
+        listOfTrains!!.add(trainStatus)
+        return listOfTrains!!
+    }
     fun returnMainPage(view: View){
         var intent = Intent(this, MainActivity::class.java)
         var returnIntent = this.intent
