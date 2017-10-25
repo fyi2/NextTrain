@@ -1,11 +1,9 @@
 package org.sherman.tony.nexttrain.adapters
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteOpenHelper
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -14,7 +12,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import org.sherman.tony.nexttrain.R
-import org.sherman.tony.nexttrain.activities.MainActivity
+import org.sherman.tony.nexttrain.activities.NextTrainActivity
+import org.sherman.tony.nexttrain.data.CODE_TEST
+import org.sherman.tony.nexttrain.data.Globals
 import org.sherman.tony.nexttrain.models.StationList
 
 
@@ -29,7 +29,7 @@ class ListRecyclerAdapter(context: Context, stations:ArrayList<StationList>): Re
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         // Create a View from the XML
-        val view = LayoutInflater.from(context).inflate(R.layout.station_lst_item,parent,false)
+        val view = LayoutInflater.from(context).inflate(R.layout.station_names,parent,false)
 
         return ViewHolder(view,context,stations)
 
@@ -43,7 +43,7 @@ class ListRecyclerAdapter(context: Context, stations:ArrayList<StationList>): Re
 
         var mContext = context
         var mList = list
-        var stationName: TextView = itemView.findViewById(R.id.stationListTextViewID)
+        var stationName: TextView = itemView.findViewById(R.id.stationNameTextViewID)
 
         fun bindViews(stationList: StationList) {
 
@@ -55,13 +55,17 @@ class ListRecyclerAdapter(context: Context, stations:ArrayList<StationList>): Re
         override fun onClick(view: View?) {
             var mPosition: Int = adapterPosition
             var status = mList[mPosition]
+            var bundle = Bundle()
 
             when(view!!.id){
                 stationName.id -> {
                     var db = dBHandler(mContext)
                     db.touchRecord(stationName.text.toString())
                     var returnCode = db.touchRecord(stationName.text.toString())
-                    Toast.makeText(mContext, "Clicked Station ${stationName.text}", Toast.LENGTH_LONG).show()
+                    Globals.stationName = stationName.text.toString()
+                    val intent = Intent(context, NextTrainActivity::class.java)
+                    intent.putExtra("station", stationName.text.toString())
+                    startActivity(context, intent, bundle)
                 }
             }
         }

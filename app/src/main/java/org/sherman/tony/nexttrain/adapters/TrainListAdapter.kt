@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import org.sherman.tony.nexttrain.models.TrainStatus
 import org.sherman.tony.nexttrain.R
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -27,7 +26,6 @@ class TrainListAdapter(var listOfTrains: ArrayList<TrainStatus>,
     }
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        //println("BINDING ${listOfTrains[position].sch_arr_time}")
         holder!!.bindView(listOfTrains[position])
     }
 
