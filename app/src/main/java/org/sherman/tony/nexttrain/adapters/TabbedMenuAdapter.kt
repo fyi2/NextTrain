@@ -5,9 +5,7 @@ import android.support.v4.app.FragmentPagerAdapter
 import org.sherman.tony.nexttrain.fragments.InboundFragment
 import org.sherman.tony.nexttrain.fragments.OutboundFragment
 
-/**
- * Created by Admin on 10/20/2017.
- */
+
 class TabbedMenuAdapter(fm:FragmentManager): FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): android.support.v4.app.Fragment {
         when(position) {

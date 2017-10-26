@@ -18,6 +18,7 @@ import org.json.JSONException
 import org.json.JSONObject
 
 import org.sherman.tony.nexttrain.R
+import org.sherman.tony.nexttrain.R.id.inboundFragmentRecyclerID
 import org.sherman.tony.nexttrain.adapters.TrainListAdapter
 import org.sherman.tony.nexttrain.data.Globals
 import org.sherman.tony.nexttrain.data.MBTA_FORMAT
@@ -46,6 +47,7 @@ class InboundFragment : Fragment() {
 
         var linearLayoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
         inboundFragmentRecyclerID.setHasFixedSize(true)
+        //inboundFragmentRecyclerID
 
         listOfTrains = ArrayList<TrainStatus>()
         volleyRequest = Volley.newRequestQueue(context)
@@ -57,7 +59,7 @@ class InboundFragment : Fragment() {
 
     fun createURL(station: String): String {
 
-        val stationString = "&stop="+station.replace(" ", "%20")
+        val stationString = "&stop="+station.replace(" ", "%20").replace("/", "%2F")
         return MBTA_ROOT + MBTA_KEY +stationString+ MBTA_FORMAT
     }
 
@@ -73,13 +75,13 @@ class InboundFragment : Fragment() {
                     try {
                         val responseMode = response.getJSONArray("mode")
                         if (responseMode.length() == 0){ // Catch an empty Response
-                            listOfTrains = setErrorList(routeDefault, defaultTime)
+                            setErrorList(routeDefault, defaultTime)
                         }
                         else {
                             val responseModeRouteObj = responseMode.getJSONObject(0)
                             val responseModeRouteObjRoute = responseModeRouteObj.getJSONArray("route")
                             if (responseModeRouteObjRoute.length() == 0){ // catch empty Routes
-                                listOfTrains = setErrorList(routeDefault, defaultTime)
+                                setErrorList(routeDefault, defaultTime)
                             }
                             else {
                                 for (i in 0..responseModeRouteObjRoute.length() - 1) {
@@ -90,22 +92,33 @@ class InboundFragment : Fragment() {
                                         val direction = responseModeRouteObjRouteRouteObjDirectionDirectionObj.getString("direction_id")
                                         val directionValue = direction.toInt()
                                         val tripArray = responseModeRouteObjRouteRouteObjDirectionDirectionObj.getJSONArray("trip")
-                                        for (k in 0..tripArray.length() - 1) {
-                                            trainStatus = TrainStatus()
-                                            trainStatus.direction_id = directionValue
-                                            var tripArrayObj = tripArray.getJSONObject(k)
-                                            var schArrival = tripArrayObj.getString("sch_arr_dt")
-                                            trainStatus.sch_arr_time = schArrival.toLong()
-                                            trainStatus.route = tripArrayObj.getString("trip_name")
+                                        if (tripArray.length() == 0){
+                                            setErrorList(routeDefault,defaultTime)
+                                        } else {
+                                            for (k in 0..tripArray.length() - 1) {
+                                                trainStatus = TrainStatus()
+                                                trainStatus.direction_id = directionValue
+                                                var tripArrayObj = tripArray.getJSONObject(k)
+                                                var schArrival = tripArrayObj.getString("sch_arr_dt")
+                                                trainStatus.sch_arr_time = schArrival.toLong()
+                                                trainStatus.route = tripArrayObj.getString("trip_name")
 
-                                            if(directionValue == chosenDirection) {
-                                                listOfTrains!!.add(0, trainStatus)
+                                                if (directionValue == chosenDirection) {
+                                                    listOfTrains!!.add(0, trainStatus)
+                                                }
+                                            }
+                                            if (tripArray.length() == 0){
+                                                setErrorList(routeDefault,defaultTime)
                                             }
                                         }
                                     }
                                 }
                             }
                         }
+                        if(listOfTrains!!.size == 0){
+                            setErrorList(routeDefault, defaultTime)
+                        }
+                        listOfTrains!!.sortBy { it.sch_arr_time }
                         trainAdapter = TrainListAdapter(listOfTrains!!, context)
 
                         // Set up recycler Adapter
@@ -130,14 +143,14 @@ class InboundFragment : Fragment() {
         return
     }
 
-    fun setErrorList(route: String, now: Long):ArrayList<TrainStatus>{
+    fun setErrorList(route: String, now: Long){
         val trainStatus = TrainStatus()
         trainStatus.route = route
         trainStatus.direction_id = 1
         trainStatus.sch_arr_time = now
 
         listOfTrains!!.add(trainStatus)
-        return listOfTrains!!
+        return
     }
 
 

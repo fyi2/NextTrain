@@ -38,7 +38,6 @@ class TrainListAdapter(var listOfTrains: ArrayList<TrainStatus>,
             var humanTime = readableTime(train.sch_arr_time!!)
             station.text = train.route.toString()
             arrivalTime.text = humanTime
-            //arrivalTime.text = train.sch_arr_time.toString()
         }
 
         fun readableTime(seconds: Long):String {

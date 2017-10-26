@@ -1,7 +1,5 @@
 package org.sherman.tony.nexttrain.fragments
 
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -14,13 +12,14 @@ import com.android.volley.Response
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import kotlinx.android.synthetic.main.fragment_inbound.*
 import kotlinx.android.synthetic.main.fragment_outbound.*
 import org.json.JSONException
 import org.json.JSONObject
 
 import org.sherman.tony.nexttrain.R
+import org.sherman.tony.nexttrain.R.id.outboundFragmentRecyclerID
 import org.sherman.tony.nexttrain.adapters.TrainListAdapter
+import org.sherman.tony.nexttrain.data.Globals
 import org.sherman.tony.nexttrain.data.MBTA_FORMAT
 import org.sherman.tony.nexttrain.data.MBTA_KEY
 import org.sherman.tony.nexttrain.data.MBTA_ROOT
@@ -48,7 +47,7 @@ class OutboundFragment : Fragment() {
         listOfTrains = ArrayList<TrainStatus>()
         volleyRequest = Volley.newRequestQueue(context)
 
-        val station = "Back Bay" // Will use globals later TODO
+        val station = Globals.stationName.toString()
         val url = createURL(station)
         readTrains(url,0, linearLayoutManager)
     }
@@ -104,6 +103,7 @@ class OutboundFragment : Fragment() {
                                 }
                             }
                         }
+                        listOfTrains!!.sortBy { it.sch_arr_time }
                         trainAdapter = TrainListAdapter(listOfTrains!!, context)
 
                         // Set up recycler Adapter

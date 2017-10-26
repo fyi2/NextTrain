@@ -1,8 +1,6 @@
 package org.sherman.tony.nexttrain.models
 
-/**
- * Created by Admin on 10/21/2017.
- */
+
 class TrainStatus() {
     var direction_id: Int? = null
     var sch_arr_time: Long? = null

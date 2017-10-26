@@ -1,6 +1,5 @@
 package org.sherman.tony.nexttrain.activities
 
-import android.app.ActionBar
 import android.app.Activity
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -19,10 +18,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //val activity:Activity = this
-        //activity.title = "Next Train"
-        //var mactionBar:ActionBar = actionBar
-        //mactionBar.setDisplayShowTitleEnabled(true)
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
